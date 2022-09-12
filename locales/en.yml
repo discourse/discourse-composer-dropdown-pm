@@ -1,0 +1,7 @@
+en:
+  theme_metadata:
+    description: 'Adds the New Message functionality to the composer dropdown'
+  custom_composer_actions:
+    reply_as_private_message:
+      label: New message
+      desc: Create a new personal message
