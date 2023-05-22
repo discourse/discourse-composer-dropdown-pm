@@ -79,7 +79,7 @@ export default apiInitializer('0.11.1', api => {
       }
 
       if (
-        this.siteSettings.enable_personal_messages &&
+        this.get("currentUser.can_send_private_messages") &&
         this.action !== PRIVATE_MESSAGE &&
         !this.isEditing
       ) {
