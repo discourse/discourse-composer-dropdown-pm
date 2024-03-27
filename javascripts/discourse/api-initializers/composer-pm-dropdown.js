@@ -1,25 +1,24 @@
-import { apiInitializer } from 'discourse/lib/api'
-import discourseComputed from 'discourse-common/utils/decorators'
+import { apiInitializer } from "discourse/lib/api";
 import {
   CREATE_SHARED_DRAFT,
   CREATE_TOPIC,
-  EDIT,
   PRIVATE_MESSAGE,
   REPLY,
-} from 'discourse/models/composer'
+} from "discourse/models/composer";
+import discourseComputed from "discourse-common/utils/decorators";
+import I18n from "discourse-i18n";
 
 // Component can get destroyed and lose state
-let _topicSnapshot = null
-let _postSnapshot = null
-let _actionSnapshot = null
+let _topicSnapshot = null;
+let _postSnapshot = null;
 
-export default apiInitializer('0.11.1', api => {
-  api.modifyClass('component:composer-actions', {
-    pluginId: 'composer-pm-dropdown',
+export default apiInitializer("0.11.1", (api) => {
+  api.modifyClass("component:composer-actions", {
+    pluginId: "composer-pm-dropdown",
 
-    @discourseComputed('seq')
+    @discourseComputed("seq")
     content() {
-      let items = []
+      let items = [];
 
       if (
         this.action === REPLY &&
@@ -33,14 +32,14 @@ export default apiInitializer('0.11.1', api => {
       ) {
         items.push({
           name: I18n.t(
-            'composer.composer_actions.reply_as_new_group_message.label'
+            "composer.composer_actions.reply_as_new_group_message.label"
           ),
           description: I18n.t(
-            'composer.composer_actions.reply_as_new_group_message.desc'
+            "composer.composer_actions.reply_as_new_group_message.desc"
           ),
-          icon: 'plus',
-          id: 'reply_as_new_group_message',
-        })
+          icon: "plus",
+          id: "reply_as_new_group_message",
+        });
       }
 
       if (
@@ -53,13 +52,13 @@ export default apiInitializer('0.11.1', api => {
         _topicSnapshot
       ) {
         items.push({
-          name: I18n.t('composer.composer_actions.reply_as_new_topic.label'),
+          name: I18n.t("composer.composer_actions.reply_as_new_topic.label"),
           description: I18n.t(
-            'composer.composer_actions.reply_as_new_topic.desc'
+            "composer.composer_actions.reply_as_new_topic.desc"
           ),
-          icon: 'plus',
-          id: 'reply_as_new_topic',
-        })
+          icon: "plus",
+          id: "reply_as_new_topic",
+        });
       }
 
       if (
@@ -69,13 +68,13 @@ export default apiInitializer('0.11.1', api => {
           !(this.replyOptions.userAvatar && this.replyOptions.userLink))
       ) {
         items.push({
-          name: I18n.t('composer.composer_actions.reply_to_post.label', {
+          name: I18n.t("composer.composer_actions.reply_to_post.label", {
             postUsername: _postSnapshot.username,
           }),
-          description: I18n.t('composer.composer_actions.reply_to_post.desc'),
-          icon: 'share',
-          id: 'reply_to_post',
-        })
+          description: I18n.t("composer.composer_actions.reply_to_post.desc"),
+          icon: "share",
+          id: "reply_to_post",
+        });
       }
 
       if (
@@ -86,15 +85,15 @@ export default apiInitializer('0.11.1', api => {
         items.push({
           name: I18n.t(
             themePrefix(
-              'custom_composer_actions.reply_as_private_message.label'
+              "custom_composer_actions.reply_as_private_message.label"
             )
           ),
           description: I18n.t(
-            themePrefix('custom_composer_actions.reply_as_private_message.desc')
+            themePrefix("custom_composer_actions.reply_as_private_message.desc")
           ),
-          icon: 'envelope',
-          id: 'reply_as_private_message',
-        })
+          icon: "envelope",
+          id: "reply_as_private_message",
+        });
       }
 
       if (
@@ -107,11 +106,11 @@ export default apiInitializer('0.11.1', api => {
             this.replyOptions.topicLink))
       ) {
         items.push({
-          name: I18n.t('composer.composer_actions.reply_to_topic.label'),
-          description: I18n.t('composer.composer_actions.reply_to_topic.desc'),
-          icon: 'share',
-          id: 'reply_to_topic',
-        })
+          name: I18n.t("composer.composer_actions.reply_to_topic.label"),
+          description: I18n.t("composer.composer_actions.reply_to_topic.desc"),
+          icon: "share",
+          id: "reply_to_topic",
+        });
       }
 
       // if answered post is a whisper, we can only answer with a whisper so no need for toggle
@@ -122,52 +121,52 @@ export default apiInitializer('0.11.1', api => {
           _postSnapshot.post_type !== this.site.post_types.whisper)
       ) {
         items.push({
-          name: I18n.t('composer.composer_actions.toggle_whisper.label'),
-          description: I18n.t('composer.composer_actions.toggle_whisper.desc'),
-          icon: 'far-eye-slash',
-          id: 'toggle_whisper',
-        })
+          name: I18n.t("composer.composer_actions.toggle_whisper.label"),
+          description: I18n.t("composer.composer_actions.toggle_whisper.desc"),
+          icon: "far-eye-slash",
+          id: "toggle_whisper",
+        });
       }
 
       if (this.action === CREATE_TOPIC) {
         if (this.site.shared_drafts_category_id) {
           // Shared Drafts Choice
           items.push({
-            name: I18n.t('composer.composer_actions.shared_draft.label'),
-            description: I18n.t('composer.composer_actions.shared_draft.desc'),
-            icon: 'far-clipboard',
-            id: 'shared_draft',
-          })
+            name: I18n.t("composer.composer_actions.shared_draft.label"),
+            description: I18n.t("composer.composer_actions.shared_draft.desc"),
+            icon: "far-clipboard",
+            id: "shared_draft",
+          });
         }
       }
 
       const showToggleTopicBump =
-        this.get('currentUser.staff') ||
-        this.get('currentUser.trust_level') === 4
+        this.get("currentUser.staff") ||
+        this.get("currentUser.trust_level") === 4;
 
       if (this.action === REPLY && showToggleTopicBump) {
         items.push({
-          name: I18n.t('composer.composer_actions.toggle_topic_bump.label'),
+          name: I18n.t("composer.composer_actions.toggle_topic_bump.label"),
           description: I18n.t(
-            'composer.composer_actions.toggle_topic_bump.desc'
+            "composer.composer_actions.toggle_topic_bump.desc"
           ),
-          icon: 'anchor',
-          id: 'toggle_topic_bump',
-        })
+          icon: "anchor",
+          id: "toggle_topic_bump",
+        });
       }
 
       if (items.length === 0) {
         items.push({
-          name: I18n.t('composer.composer_actions.create_topic.label'),
+          name: I18n.t("composer.composer_actions.create_topic.label"),
           description: I18n.t(
-            'composer.composer_actions.reply_as_new_topic.desc'
+            "composer.composer_actions.reply_as_new_topic.desc"
           ),
-          icon: 'share',
-          id: 'create_topic',
-        })
+          icon: "share",
+          id: "create_topic",
+        });
       }
 
-      return items
+      return items;
     },
-  })
-})
+  });
+});
