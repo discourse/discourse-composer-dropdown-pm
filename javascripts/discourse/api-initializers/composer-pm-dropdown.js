@@ -1,12 +1,12 @@
 import { apiInitializer } from "discourse/lib/api";
+import discourseComputed from "discourse/lib/decorators";
 import {
   CREATE_SHARED_DRAFT,
   CREATE_TOPIC,
   PRIVATE_MESSAGE,
   REPLY,
 } from "discourse/models/composer";
-import discourseComputed from "discourse-common/utils/decorators";
-import I18n from "discourse-i18n";
+import { i18n } from "discourse-i18n";
 
 // Component can get destroyed and lose state
 let _topicSnapshot = null;
@@ -31,10 +31,10 @@ export default apiInitializer("0.11.1", (api) => {
         _topicSnapshot
       ) {
         items.push({
-          name: I18n.t(
+          name: i18n(
             "composer.composer_actions.reply_as_new_group_message.label"
           ),
-          description: I18n.t(
+          description: i18n(
             "composer.composer_actions.reply_as_new_group_message.desc"
           ),
           icon: "plus",
@@ -52,8 +52,8 @@ export default apiInitializer("0.11.1", (api) => {
         _topicSnapshot
       ) {
         items.push({
-          name: I18n.t("composer.composer_actions.reply_as_new_topic.label"),
-          description: I18n.t(
+          name: i18n("composer.composer_actions.reply_as_new_topic.label"),
+          description: i18n(
             "composer.composer_actions.reply_as_new_topic.desc"
           ),
           icon: "plus",
@@ -68,10 +68,10 @@ export default apiInitializer("0.11.1", (api) => {
           !(this.replyOptions.userAvatar && this.replyOptions.userLink))
       ) {
         items.push({
-          name: I18n.t("composer.composer_actions.reply_to_post.label", {
+          name: i18n("composer.composer_actions.reply_to_post.label", {
             postUsername: _postSnapshot.username,
           }),
-          description: I18n.t("composer.composer_actions.reply_to_post.desc"),
+          description: i18n("composer.composer_actions.reply_to_post.desc"),
           icon: "share",
           id: "reply_to_post",
         });
@@ -83,12 +83,12 @@ export default apiInitializer("0.11.1", (api) => {
         !this.isEditing
       ) {
         items.push({
-          name: I18n.t(
+          name: i18n(
             themePrefix(
               "custom_composer_actions.reply_as_private_message.label"
             )
           ),
-          description: I18n.t(
+          description: i18n(
             themePrefix("custom_composer_actions.reply_as_private_message.desc")
           ),
           icon: "envelope",
@@ -106,8 +106,8 @@ export default apiInitializer("0.11.1", (api) => {
             this.replyOptions.topicLink))
       ) {
         items.push({
-          name: I18n.t("composer.composer_actions.reply_to_topic.label"),
-          description: I18n.t("composer.composer_actions.reply_to_topic.desc"),
+          name: i18n("composer.composer_actions.reply_to_topic.label"),
+          description: i18n("composer.composer_actions.reply_to_topic.desc"),
           icon: "share",
           id: "reply_to_topic",
         });
@@ -121,8 +121,8 @@ export default apiInitializer("0.11.1", (api) => {
           _postSnapshot.post_type !== this.site.post_types.whisper)
       ) {
         items.push({
-          name: I18n.t("composer.composer_actions.toggle_whisper.label"),
-          description: I18n.t("composer.composer_actions.toggle_whisper.desc"),
+          name: i18n("composer.composer_actions.toggle_whisper.label"),
+          description: i18n("composer.composer_actions.toggle_whisper.desc"),
           icon: "far-eye-slash",
           id: "toggle_whisper",
         });
@@ -132,8 +132,8 @@ export default apiInitializer("0.11.1", (api) => {
         if (this.site.shared_drafts_category_id) {
           // Shared Drafts Choice
           items.push({
-            name: I18n.t("composer.composer_actions.shared_draft.label"),
-            description: I18n.t("composer.composer_actions.shared_draft.desc"),
+            name: i18n("composer.composer_actions.shared_draft.label"),
+            description: i18n("composer.composer_actions.shared_draft.desc"),
             icon: "far-clipboard",
             id: "shared_draft",
           });
@@ -146,10 +146,8 @@ export default apiInitializer("0.11.1", (api) => {
 
       if (this.action === REPLY && showToggleTopicBump) {
         items.push({
-          name: I18n.t("composer.composer_actions.toggle_topic_bump.label"),
-          description: I18n.t(
-            "composer.composer_actions.toggle_topic_bump.desc"
-          ),
+          name: i18n("composer.composer_actions.toggle_topic_bump.label"),
+          description: i18n("composer.composer_actions.toggle_topic_bump.desc"),
           icon: "anchor",
           id: "toggle_topic_bump",
         });
@@ -157,8 +155,8 @@ export default apiInitializer("0.11.1", (api) => {
 
       if (items.length === 0) {
         items.push({
-          name: I18n.t("composer.composer_actions.create_topic.label"),
-          description: I18n.t(
+          name: i18n("composer.composer_actions.create_topic.label"),
+          description: i18n(
             "composer.composer_actions.reply_as_new_topic.desc"
           ),
           icon: "share",
