@@ -12,7 +12,7 @@ import { i18n } from "discourse-i18n";
 let _topicSnapshot = null;
 let _postSnapshot = null;
 
-export default apiInitializer("0.11.1", (api) => {
+export default apiInitializer((api) => {
   api.modifyClass(
     "component:composer-actions",
     (Superclass) =>
