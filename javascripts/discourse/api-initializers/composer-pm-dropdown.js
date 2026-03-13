@@ -1,5 +1,5 @@
+import { computed } from "@ember/object";
 import { apiInitializer } from "discourse/lib/api";
-import discourseComputed from "discourse/lib/decorators";
 import {
   CREATE_SHARED_DRAFT,
   CREATE_TOPIC,
@@ -17,8 +17,8 @@ export default apiInitializer((api) => {
     "component:composer-actions",
     (Superclass) =>
       class extends Superclass {
-        @discourseComputed("seq")
-        content() {
+        @computed("seq")
+        get content() {
           let items = [];
 
           if (
